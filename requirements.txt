@@ -1,0 +1,4 @@
+# Monitor de Promoções - dependências
+telethon>=1.36,<2       # cliente Telegram (conta de usuário)
+PyYAML>=6.0             # leitura do config.yaml
+requests>=2.31          # Bot API do Telegram e Ollama (LLM local)

@@ -1,0 +1,64 @@
+# ---------------------------------------------------------------------------
+# Monitor de Promoções - copie este arquivo para config.yaml e edite.
+# Dados sensíveis podem ficar no .env em vez daqui (veja .env.example).
+# ---------------------------------------------------------------------------
+
+telegram:
+  # Obtenha gratuitamente em https://my.telegram.org > API development tools
+  api_id: 0000000                  # ou variável TELEGRAM_API_ID
+  api_hash: "coloque_seu_api_hash" # ou variável TELEGRAM_API_HASH
+  sessao: "sessao_monitor"         # nome do arquivo .session criado no login
+
+notificacao:
+  # Bot criado no @BotFather. Fale com o bot uma vez antes, senão ele não
+  # consegue te mandar mensagem. Descubra seu chat_id com o @userinfobot.
+  bot_token: ""                    # ou variável TELEGRAM_BOT_TOKEN
+  chat_id: ""                      # ou variável TELEGRAM_CHAT_ID
+  console: true                    # também imprimir os alertas no terminal
+  timeout: 45                      # api.telegram.org é lento em algumas redes
+  tentativas: 3                    # reenvios antes de desistir
+  resumo_ao_iniciar: true          # ao subir, manda o último preço de cada item
+  resumo_mensagens: 120            # mensagens lidas por canal para montar o resumo
+
+llm:
+  habilitado: false                # true = usa Ollama local quando o regex falha
+  url: "http://localhost:11434"
+  modelo: "qwen2.5:7b"
+  timeout: 30
+
+# Canais/grupos a monitorar. Use @usuario, link t.me, ID numérico ou parte do
+# título. Rode `python main.py canais` para listar o que você já assina.
+# Deixe a lista vazia para ouvir TODOS os chats da conta (bem mais barulhento).
+canais:
+  - "@promocoesdodia"
+  - "@pelandoofertas"
+
+# Itens de interesse ------------------------------------------------------
+#   nome ..........: como aparece no alerta
+#   palavras_chave : qualquer uma que aparecer na mensagem já casa
+#   preco_alvo ....: opcional; null = alerta em qualquer preço
+#   preco_minimo ..: opcional; piso que separa o produto de jogos/acessórios
+#                    que citam o mesmo nome (ex.: "Jogo X - Switch 2 - R$ 349")
+#   excluir .......: opcional; se aparecer, o item é ignorado (acessórios etc.)
+itens:
+  - nome: "RTX 4070"
+    palavras_chave: ["rtx 4070", "rtx4070"]
+    preco_alvo: 3500.00
+    preco_minimo: 1500.00
+    categoria: "hardware"
+    excluir: ["suporte", "capa", "cooler"]
+
+  - nome: "SSD 1TB NVMe"
+    palavras_chave: ["ssd 1tb", "ssd nvme 1tb", "1tb nvme"]
+    preco_alvo: 400.00
+
+  - nome: "Air Fryer"
+    palavras_chave: ["air fryer", "airfryer", "fritadeira eletrica"]
+    preco_alvo: null
+
+# Comportamento geral -----------------------------------------------------
+banco: "dados/alertas.db"   # SQLite de deduplicação/histórico
+janela_dedup_horas: 72      # não repetir o mesmo alerta dentro dessa janela
+janela_fim_horas: 72        # por quanto tempo acompanhar o fim de uma promoção
+alertar_sem_preco: true     # avisar mesmo quando o preço não foi identificado
+log_mensagens: false        # true = loga toda mensagem recebida (depuração)

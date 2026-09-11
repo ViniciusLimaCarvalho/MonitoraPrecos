@@ -1,0 +1,10 @@
+config.yaml
+.env
+*.session
+*.session-journal
+dados/
+__pycache__/
+*.pyc
+.venv/
+.pedido_resumo
+*.log
