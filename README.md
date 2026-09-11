@@ -18,7 +18,7 @@ e só entra como plano B quando o regex não entende a mensagem.
 Requer Python 3.11+ e git.
 
 ```bash
-git clone <url-do-repositorio>
+git clone https://github.com/ViniciusLimaCarvalho/MonitoraPrecos.git
 cd MonitoraPrecos
 
 python -m venv .venv           # opcional, mas recomendado
